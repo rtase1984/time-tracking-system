@@ -1,0 +1,90 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-insert-initial-users
+      author: developer
+      changes:
+        # Admin User - password: admin123
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  value: '00000000-0000-0000-0000-000000000001'
+              - column:
+                  name: email
+                  value: 'admin@timetracking.com'
+              - column:
+                  name: password_hash
+                  value: '$2a$10$xJPR5TqKJ5p9GsQhLZG7Oe8lHCN0Gp5XhOqWZxOVvnwqZn5qJYvqS'
+              - column:
+                  name: first_name
+                  value: 'Admin'
+              - column:
+                  name: last_name
+                  value: 'User'
+              - column:
+                  name: role
+                  value: 'ADMIN'
+              - column:
+                  name: active
+                  valueBoolean: true
+
+        # Supervisor User - password: supervisor123
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  value: '00000000-0000-0000-0000-000000000002'
+              - column:
+                  name: email
+                  value: 'supervisor@timetracking.com'
+              - column:
+                  name: password_hash
+                  value: '$2a$10$xJPR5TqKJ5p9GsQhLZG7Oe8lHCN0Gp5XhOqWZxOVvnwqZn5qJYvqS'
+              - column:
+                  name: first_name
+                  value: 'John'
+              - column:
+                  name: last_name
+                  value: 'Supervisor'
+              - column:
+                  name: role
+                  value: 'SUPERVISOR'
+              - column:
+                  name: active
+                  valueBoolean: true
+
+        # Worker User - password: worker123
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  value: '00000000-0000-0000-0000-000000000003'
+              - column:
+                  name: email
+                  value: 'worker@timetracking.com'
+              - column:
+                  name: password_hash
+                  value: '$2a$10$xJPR5TqKJ5p9GsQhLZG7Oe8lHCN0Gp5XhOqWZxOVvnwqZn5qJYvqS'
+              - column:
+                  name: first_name
+                  value: 'Jane'
+              - column:
+                  name: last_name
+                  value: 'Worker'
+              - column:
+                  name: role
+                  value: 'WORKER'
+              - column:
+                  name: supervisor_id
+                  value: '00000000-0000-0000-0000-000000000002'
+              - column:
+                  name: active
+                  valueBoolean: true
+
+      rollback:
+        - delete:
+            tableName: users
+            where: id IN ('00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000002', '00000000-0000-0000-0000-000000000003')
