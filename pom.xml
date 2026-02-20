@@ -90,6 +90,12 @@
                 <artifactId>mapstruct-processor</artifactId>
                 <version>${mapstruct.version}</version>
             </dependency>
+
+            <dependency>
+                <groupId>com.timetracking</groupId>
+                <artifactId>common-events</artifactId>
+                <version>${project.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -100,6 +106,7 @@
         <module>billing-service</module>
         <module>notification-service</module>
         <module>api-gateway</module>
+        <module>common-events</module>
     </modules>
 
     <build>

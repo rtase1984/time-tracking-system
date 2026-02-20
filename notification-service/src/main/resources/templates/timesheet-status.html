@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Timesheet Status</title>
+</head>
+<body>
+<h2>Timesheet <span th:text="${status}">Status</span></h2>
+<p>Your timesheet for <strong th:text="${month}">month</strong>
+  <strong th:text="${year}">year</strong> has been
+  <strong th:text="${status}">status</strong>.</p>
+</body>
+</html>

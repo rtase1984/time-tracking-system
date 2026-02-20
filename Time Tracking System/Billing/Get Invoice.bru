@@ -1,0 +1,23 @@
+meta {
+  name: Get Invoice
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/v1/invoices/:id
+  body: none
+  auth: bearer
+}
+
+params:path {
+  id: 
+}
+
+auth:bearer {
+  token: {{jwt_token}}
+}
+
+settings {
+  encodeUrl: true
+}

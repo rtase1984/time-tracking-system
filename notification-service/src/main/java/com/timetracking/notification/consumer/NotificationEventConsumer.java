@@ -1,9 +1,13 @@
-package com.timetracking.notification.notification_service.event.consumer;
+package com.timetracking.notification.consumer;
 
-import com.timetracking.notification.notification_service.domain.EmailNotification;
-import com.timetracking.notification.notification_service.service.EmailService;
-import com.timetracking.timesheet.event.TimeEntryRegisteredEvent;
-import com.timetracking.timesheet.event.TimesheetApprovedEvent;
+import com.timetracking.notification.domain.EmailNotification;
+import com.timetracking.notification.notification_service.EmailService;
+import com.timetracking.common.event.InvoiceGeneratedEvent;
+import com.timetracking.common.event.TimeEntryRegisteredEvent;
+import com.timetracking.common.event.TimesheetApprovedEvent;
+import com.timetracking.common.event.TimesheetRejectedEvent;
+import java.util.HashMap;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -27,35 +31,33 @@ public class NotificationEventConsumer {
         event.getPayload().getUserId(),
         email,
         event.getPayload().getEntryType().toString(),
-        event.getPayload().getEntryTimestamp()
-    );
+        event.getPayload().getEntryTimestamp());
   }
 
   @KafkaListener(topics = "timesheet.approved", groupId = "notification-service")
   public void consumeTimesheetApproved(TimesheetApprovedEvent event) {
-    log.info("Processing timesheet approved notification: {}", event.getTimesheetId());
+    log.info("Processing timesheet approved notification: {}", event.getPayload().getTimesheetId());
 
     String email = "user@example.com"; // Placeholder
 
     emailService.sendTimesheetApprovedNotification(
-        event.getUserId(),
+        event.getPayload().getUserId(),
         email,
-        event.getPeriodMonth(),
-        event.getPeriodYear()
-    );
+        event.getPayload().getPeriodMonth(),
+        event.getPayload().getPeriodYear());
   }
 
   @KafkaListener(topics = "timesheet.rejected", groupId = "notification-service")
   public void consumeTimesheetRejected(TimesheetRejectedEvent event) {
-    log.info("Processing timesheet rejected notification: {}", event.getTimesheetId());
+    log.info("Processing timesheet rejected notification: {}", event.getPayload().getTimesheetId());
 
     String email = "user@example.com"; // Placeholder
 
     Map<String, Object> variables = new HashMap<>();
-    variables.put("month", event.getPeriodMonth());
-    variables.put("year", event.getPeriodYear());
+    variables.put("month", event.getPayload().getPeriodMonth());
+    variables.put("year", event.getPayload().getPeriodYear());
     variables.put("status", "REJECTED");
-    variables.put("reason", event.getReason());
+    variables.put("reason", event.getPayload().getReason());
 
     EmailNotification notification = EmailNotification.builder()
         .to(email)
@@ -69,15 +71,14 @@ public class NotificationEventConsumer {
 
   @KafkaListener(topics = "invoice.generated", groupId = "notification-service")
   public void consumeInvoiceGenerated(InvoiceGeneratedEvent event) {
-    log.info("Processing invoice generated notification: {}", event.getInvoiceNumber());
+    log.info("Processing invoice generated notification: {}", event.getPayload().getInvoiceNumber());
 
     String email = "user@example.com"; // Placeholder
 
     emailService.sendInvoiceGeneratedNotification(
-        event.getUserId(),
+        event.getPayload().getUserId(),
         email,
-        event.getInvoiceNumber(),
-        event.getTotal()
-    );
+        event.getPayload().getInvoiceNumber(),
+        event.getPayload().getTotal());
   }
 }

@@ -1,7 +1,8 @@
 package com.timetracking.tracking.event.publiser;
 
 import com.timetracking.tracking.domain.entity.TimeEntry;
-import com.timetracking.tracking.event.model.TimeEntryRegisteredEvent;
+import com.timetracking.common.event.TimeEntryRegisteredEvent;
+import com.timetracking.common.event.EntryType;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -22,10 +23,10 @@ public class TimeEntryEventPublisher {
         .eventId(UUID.randomUUID())
         .eventType("TimeEntryRegistered")
         .timestamp(LocalDateTime.now())
-        .payload(TimeEntryRegisteredEvent.TimeEntryPayload.builder()
+        .payload(TimeEntryRegisteredEvent.EventPayload.builder()
             .entryId(entry.getId())
             .userId(entry.getUserId())
-            .entryType(entry.getEntryType())
+            .entryType(EntryType.valueOf(entry.getEntryType().name()))
             .entryTimestamp(entry.getEntryTimestamp())
             .location(entry.getLocation())
             .build())

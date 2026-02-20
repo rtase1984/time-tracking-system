@@ -1,3 +1,6 @@
 spring:
   application:
     name: time-sheet-service
+
+server:
+  port: 8083

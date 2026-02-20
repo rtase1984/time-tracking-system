@@ -1,3 +1,22 @@
+server:
+  port: 8085
+
 spring:
   application:
     name: notification-service
+  mail:
+    host: localhost  # MailHog for development
+    port: 1025
+    username:
+    password:
+    properties:
+      mail.smtp.auth: false
+      mail.smtp.starttls.enable: false
+  kafka:
+    bootstrap-servers: localhost:29092
+    consumer:
+      group-id: notification-service
+
+notification:
+  from-email: noreply@timetracking.com
+  from-name: Time Tracking System

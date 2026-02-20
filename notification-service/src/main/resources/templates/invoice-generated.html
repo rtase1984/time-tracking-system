@@ -1,0 +1,12 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Invoice Generated</title>
+</head>
+<body>
+<h2>Invoice Generated</h2>
+<p>Invoice <strong th:text="${invoiceNumber}">number</strong> has been generated.</p>
+<p>Total: $<span th:text="${total}">0.00</span></p>
+<p><a th:href="${downloadUrl}">Download PDF</a></p>
+</body>
+</html>

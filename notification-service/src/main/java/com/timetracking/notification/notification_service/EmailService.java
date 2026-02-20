@@ -1,6 +1,6 @@
-package com.timetracking.notification.notification_service.service;
+package com.timetracking.notification.notification_service;
 
-import com.timetracking.notification.notification_service.domain.EmailNotification;
+import com.timetracking.notification.domain.EmailNotification;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;

@@ -1,3 +1,14 @@
+server:
+  port: 8084
+
 spring:
   application:
     name: billing-service
+  data:
+    mongodb:
+      uri: mongodb://admin:admin123@localhost:27017/billing_db?authSource=admin
+      database: billing_db
+  kafka:
+    bootstrap-servers: localhost:29092
+    consumer:
+      group-id: billing-service

@@ -1,25 +1,23 @@
-package com.timetracking.notification.notification_service.controller;
+package com.timetracking.notification.controller;
 
-import com.timetracking.notification.notification_service.domain.EmailNotification;
-import com.timetracking.notification.notification_service.domain.NotificationRequest;
-import com.timetracking.notification.notification_service.service.EmailService;
+import com.timetracking.notification.notification_service.EmailService;
+import com.timetracking.notification.domain.NotificationRequest;
+import com.timetracking.notification.domain.EmailNotification;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Map;
-import org.springframework.web.bind.annotation.RequestBody;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/notifications")
 @RequiredArgsConstructor
 @Tag(name = "Notifications")
+@Slf4j
 public class NotificationController {
 
   private final EmailService emailService;
@@ -28,6 +26,9 @@ public class NotificationController {
   @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<Map<String, String>> sendNotification(
       @RequestBody NotificationRequest request) {
+
+    log.info("Manual notification request received: type={}, user={}",
+        request.getType(), request.getUserId());
 
     switch (request.getType()) {
       case TIME_ENTRY_REGISTERED:
@@ -60,6 +61,7 @@ public class NotificationController {
         break;
       default:
         log.warn("Unhandled notification type: {}", request.getType());
+        return ResponseEntity.badRequest().body(Map.of("error", "Unhandled notification type"));
     }
 
     return ResponseEntity.ok(Map.of("status", "sent"));

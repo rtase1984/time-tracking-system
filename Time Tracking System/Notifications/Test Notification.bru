@@ -1,0 +1,23 @@
+meta {
+  name: Test Notification
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/v1/notifications/test?to=john@example.com
+  body: json
+  auth: bearer
+}
+
+params:query {
+  to: john@example.com
+}
+
+auth:bearer {
+  token: {{jwt_token}}
+}
+
+settings {
+  encodeUrl: true
+}

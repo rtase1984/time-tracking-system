@@ -1,6 +1,6 @@
-package com.timetracking.notification.notification_service.job;
+package com.timetracking.notification.job;
 
-import com.timetracking.notification.notification_service.service.EmailService;
+import com.timetracking.notification.notification_service.EmailService;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;

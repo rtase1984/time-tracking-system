@@ -1,4 +1,4 @@
-package com.timetracking.notification.notification_service;
+package com.timetracking.notification;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

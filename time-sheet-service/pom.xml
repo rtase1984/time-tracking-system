@@ -80,6 +80,7 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.3.0</version>
         </dependency>
 
         <dependency>
@@ -119,6 +120,10 @@
             <artifactId>spring-boot-test</artifactId>
             <version>3.2.5</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.timetracking</groupId>
+            <artifactId>common-events</artifactId>
         </dependency>
     </dependencies>
 

@@ -14,11 +14,19 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TimesheetApprovedEvent {
-    private UUID eventId;
-    private UUID timesheetId;
-    private UUID userId;
-    private Integer periodMonth;
-    private Integer periodYear;
-    private BigDecimal totalHours;
-    private LocalDateTime approvedAt;
+    private EventPayload payload;
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class EventPayload {
+        private UUID eventId;
+        private UUID timesheetId;
+        private UUID userId;
+        private Integer periodMonth;
+        private Integer periodYear;
+        private BigDecimal totalHours;
+        private LocalDateTime approvedAt;
+    }
 }

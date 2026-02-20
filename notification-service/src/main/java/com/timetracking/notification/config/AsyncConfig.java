@@ -1,4 +1,4 @@
-package com.timetracking.notification.notification_service.config;
+package com.timetracking.notification.config;
 
 import java.util.concurrent.Executor;
 import org.springframework.context.annotation.Bean;

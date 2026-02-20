@@ -6,7 +6,8 @@ import com.timetracking.timesheet.domain.dto.TimesheetResponse;
 import com.timetracking.timesheet.domain.entity.Timesheet;
 import com.timetracking.timesheet.domain.entity.TimesheetAdjustment;
 import com.timetracking.timesheet.domain.entity.TimesheetStatus;
-import com.timetracking.timesheet.event.TimesheetApprovedEvent;
+import com.timetracking.common.event.TimesheetApprovedEvent;
+import com.timetracking.common.event.TimesheetRejectedEvent;
 import com.timetracking.timesheet.exception.BusinessException;
 import com.timetracking.timesheet.mapper.TimesheetMapper;
 import com.timetracking.timesheet.repository.TimesheetRepository;
@@ -90,6 +91,8 @@ public class TimesheetServiceImpl implements TimesheetService {
     // Publish event to Kafka
     if (request.getStatus() == TimesheetStatus.APPROVED) {
       publishTimesheetApproved(timesheet);
+    } else if (request.getStatus() == TimesheetStatus.REJECTED) {
+      publishTimesheetRejected(timesheet, request.getComments());
     }
 
     return timesheetMapper.toResponse(timesheet);
@@ -127,17 +130,36 @@ public class TimesheetServiceImpl implements TimesheetService {
 
   private void publishTimesheetApproved(Timesheet timesheet) {
     TimesheetApprovedEvent event = TimesheetApprovedEvent.builder()
-        .eventId(UUID.randomUUID())
-        .timesheetId(timesheet.getId())
-        .userId(timesheet.getUserId())
-        .periodMonth(timesheet.getPeriodMonth())
-        .periodYear(timesheet.getPeriodYear())
-        .totalHours(timesheet.getTotalHours())
-        .approvedAt(timesheet.getApprovedAt())
+        .payload(TimesheetApprovedEvent.EventPayload.builder()
+            .eventId(UUID.randomUUID())
+            .timesheetId(timesheet.getId())
+            .userId(timesheet.getUserId())
+            .periodMonth(timesheet.getPeriodMonth())
+            .periodYear(timesheet.getPeriodYear())
+            .totalHours(timesheet.getTotalHours())
+            .approvedAt(timesheet.getApprovedAt())
+            .build())
         .build();
 
     kafkaTemplate.send("timesheet.approved", timesheet.getUserId().toString(), event);
     log.info("Timesheet approved event published: {}", timesheet.getId());
+  }
+
+  private void publishTimesheetRejected(Timesheet timesheet, String reason) {
+    TimesheetRejectedEvent event = TimesheetRejectedEvent.builder()
+        .payload(TimesheetRejectedEvent.EventPayload.builder()
+            .eventId(UUID.randomUUID())
+            .timesheetId(timesheet.getId())
+            .userId(timesheet.getUserId())
+            .periodMonth(timesheet.getPeriodMonth())
+            .periodYear(timesheet.getPeriodYear())
+            .reason(reason)
+            .rejectedAt(LocalDateTime.now())
+            .build())
+        .build();
+
+    kafkaTemplate.send("timesheet.rejected", timesheet.getUserId().toString(), event);
+    log.info("Timesheet rejected event published: {}", timesheet.getId());
   }
 
   @Override
@@ -145,8 +167,7 @@ public class TimesheetServiceImpl implements TimesheetService {
   public void calculateAllTimesheetsForPeriod(int month, int year) {
     log.info("Calculating all timesheets for period {}/{}", month, year);
 
-    List<Timesheet> timesheets =
-        timesheetRepository.findByPeriodMonthAndPeriodYear(month, year);
+    List<Timesheet> timesheets = timesheetRepository.findByPeriodMonthAndPeriodYear(month, year);
 
     if (timesheets.isEmpty()) {
       log.info("No timesheets found for period {}/{}", month, year);
@@ -171,16 +192,13 @@ public class TimesheetServiceImpl implements TimesheetService {
           "Timesheet calculated: id={}, userId={}, hours={}",
           timesheet.getId(),
           timesheet.getUserId(),
-          timesheet.getTotalHours()
-      );
+          timesheet.getTotalHours());
     }
 
     log.info(
         "Finished calculating {} timesheets for period {}/{}",
         timesheets.size(),
         month,
-        year
-    );
+        year);
   }
 }
-

@@ -1,0 +1,30 @@
+meta {
+  name: Approve Timesheet
+  type: http
+  seq: 2
+}
+
+post {
+  url: {{baseUrl}}/api/v1/timesheets/:timesheetId/approve
+  body: json
+  auth: bearer
+}
+
+params:path {
+  timesheetId: 
+}
+
+auth:bearer {
+  token: {{jwt_token}}
+}
+
+body:json {
+  {
+      "status": "APPROVED",
+      "comments": "All looks good"
+  }
+}
+
+settings {
+  encodeUrl: true
+}

@@ -1,4 +1,4 @@
-package com.timetracking.notification.notification_service.domain;
+package com.timetracking.notification.domain;
 
 import java.util.Map;
 import java.util.UUID;
