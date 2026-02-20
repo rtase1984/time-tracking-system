@@ -1,6 +1,7 @@
 package com.timetracking.auth.config;
 
 import com.timetracking.auth.filter.JwtAuthenticationFilter;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,6 +33,8 @@ public class SecurityConfig {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
         .csrf(AbstractHttpConfigurer::disable)
+        .formLogin(AbstractHttpConfigurer::disable)
+        .httpBasic(AbstractHttpConfigurer::disable)
         .authorizeHttpRequests(auth -> auth
             .requestMatchers(
                 "/api/v1/auth/login",
@@ -40,7 +43,8 @@ public class SecurityConfig {
                 "/v3/api-docs/**",
                 "/swagger-ui/**",
                 "/swagger-ui.html",
-                "/actuator/**"
+                "/actuator/**",
+                "/error"
             ).permitAll()
             .anyRequest().authenticated()
         )
@@ -69,5 +73,10 @@ public class SecurityConfig {
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
+  }
+
+  @PostConstruct
+  public void init() {
+    System.out.println(">>> SECURITY CONFIG ACTIVA <<<");
   }
 }

@@ -3,88 +3,45 @@ databaseChangeLog:
       id: 002-insert-initial-users
       author: developer
       changes:
-        # Admin User - password: admin123
+        # Admin User - Password: admin123
         - insert:
             tableName: users
             columns:
-              - column:
-                  name: id
-                  value: '00000000-0000-0000-0000-000000000001'
-              - column:
-                  name: email
-                  value: 'admin@timetracking.com'
-              - column:
-                  name: password_hash
-                  value: '$2a$10$xJPR5TqKJ5p9GsQhLZG7Oe8lHCN0Gp5XhOqWZxOVvnwqZn5qJYvqS'
-              - column:
-                  name: first_name
-                  value: 'Admin'
-              - column:
-                  name: last_name
-                  value: 'User'
-              - column:
-                  name: role
-                  value: 'ADMIN'
-              - column:
-                  name: active
-                  valueBoolean: true
+              - column: { name: id, value: '00000000-0000-0000-0000-000000000001' }
+              - column: { name: email, value: 'admin@timetracking.com' }
+              - column: { name: password_hash, value: '$2a$10$WxFit9BxVaZlHd3Dpz2TRer1tjmgNw9sHr39SYybycPSpE/TCrRB6' }
+              - column: { name: first_name, value: 'Admin' }
+              - column: { name: last_name, value: 'User' }
+              - column: { name: role, value: 'ADMIN' }
+              - column: { name: active, valueBoolean: true }
+              - column: { name: created_at, valueComputed: 'CURRENT_TIMESTAMP' }
+              - column: { name: updated_at, valueComputed: 'CURRENT_TIMESTAMP' }
 
-        # Supervisor User - password: supervisor123
+        # Supervisor User - Password: supervisor123
         - insert:
             tableName: users
             columns:
-              - column:
-                  name: id
-                  value: '00000000-0000-0000-0000-000000000002'
-              - column:
-                  name: email
-                  value: 'supervisor@timetracking.com'
-              - column:
-                  name: password_hash
-                  value: '$2a$10$xJPR5TqKJ5p9GsQhLZG7Oe8lHCN0Gp5XhOqWZxOVvnwqZn5qJYvqS'
-              - column:
-                  name: first_name
-                  value: 'John'
-              - column:
-                  name: last_name
-                  value: 'Supervisor'
-              - column:
-                  name: role
-                  value: 'SUPERVISOR'
-              - column:
-                  name: active
-                  valueBoolean: true
+              - column: { name: id, value: '00000000-0000-0000-0000-000000000002' }
+              - column: { name: email, value: 'supervisor@timetracking.com' }
+              - column: { name: password_hash, value: '$2a$10$DzIP2a04kXeljsPNhwxT4ugkjgt0F/ekq31V5D7D1DhzsLSTj.ZXy' }
+              - column: { name: first_name, value: 'John' }
+              - column: { name: last_name, value: 'Supervisor' }
+              - column: { name: role, value: 'SUPERVISOR' }
+              - column: { name: active, valueBoolean: true }
+              - column: { name: created_at, valueComputed: 'CURRENT_TIMESTAMP' }
+              - column: { name: updated_at, valueComputed: 'CURRENT_TIMESTAMP' }
 
-        # Worker User - password: worker123
+        # Worker User - Password: worker123
         - insert:
             tableName: users
             columns:
-              - column:
-                  name: id
-                  value: '00000000-0000-0000-0000-000000000003'
-              - column:
-                  name: email
-                  value: 'worker@timetracking.com'
-              - column:
-                  name: password_hash
-                  value: '$2a$10$xJPR5TqKJ5p9GsQhLZG7Oe8lHCN0Gp5XhOqWZxOVvnwqZn5qJYvqS'
-              - column:
-                  name: first_name
-                  value: 'Jane'
-              - column:
-                  name: last_name
-                  value: 'Worker'
-              - column:
-                  name: role
-                  value: 'WORKER'
-              - column:
-                  name: supervisor_id
-                  value: '00000000-0000-0000-0000-000000000002'
-              - column:
-                  name: active
-                  valueBoolean: true
-
-      rollback:
-        - delete:
-            tableName: users
-            where: id IN ('00000000-0000-0000-0000-000000000001', '00000000-0000-0000-0000-000000000002', '00000000-0000-0000-0000-000000000003')
+              - column: { name: id, value: '00000000-0000-0000-0000-000000000003' }
+              - column: { name: email, value: 'worker@timetracking.com' }
+              - column: { name: password_hash, value: '$2a$10$ByI6L6SlsI7V6XU6L6SlsO6L6SlsI7V6XU6L6SlsO6L6SlsI7V6XU' }
+              - column: { name: first_name, value: 'Jane' }
+              - column: { name: last_name, value: 'Worker' }
+              - column: { name: role, value: 'WORKER' }
+              - column: { name: supervisor_id, value: '00000000-0000-0000-0000-000000000002' }
+              - column: { name: active, valueBoolean: true }
+              - column: { name: created_at, valueComputed: 'CURRENT_TIMESTAMP' }
+              - column: { name: updated_at, valueComputed: 'CURRENT_TIMESTAMP' }
